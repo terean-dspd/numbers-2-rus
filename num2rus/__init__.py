@@ -1,1 +1,1 @@
-name = "numbers_2_rus"
+from . main import converter

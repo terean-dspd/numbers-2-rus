@@ -4,7 +4,7 @@
 
 from typing import Tuple
 from decimal import Decimal
-from converter import NUMBERS, TAILS, KOPS, RUBS
+from . converter import NUMBERS, TAILS, KOPS, RUBS
 
 
 def get_rubles(dimention, value, ones, decs, hunderts):
@@ -74,7 +74,7 @@ def decimal_parser(number_str: str, zero_on: bool = True) -> Tuple[str, str]:
         string += " " + NUMBERS["десятки"][decs*10]
         if ones > 0 and ones in [1, 2]:
             string += " " + NUMBERS["додвадцати"][ones][1]
-        else:
+        elif ones > 0:
             string += " " + NUMBERS["додвадцати"][ones]
     if number_int in [1, 2, 3, 4, 5, 6, 7, 8, 9]:
         tail = KOPS[number_int]
@@ -87,6 +87,7 @@ def decimal_parser(number_str: str, zero_on: bool = True) -> Tuple[str, str]:
     if zero_on and not string and not tail:
         string = NUMBERS["додвадцати"][0]
         tail = KOPS[0]
+
     return string, tail
 
 
@@ -143,7 +144,7 @@ def main_parser(number_str: str, dimention: str) -> Tuple[str, str, str]:
     return string, tl, rubs
 
 
-def transscriber(number: float, zero_on: bool = True) -> str:
+def converter(number: float, zero_on: bool = True) -> str:
     if not isinstance(number, float):
         try:
             number = float(number)
@@ -166,4 +167,4 @@ def transscriber(number: float, zero_on: bool = True) -> str:
 
 if __name__ == "__main__":
     # num = input()
-    transscriber(1_100_101)
+    transscriber(1_100_101.20)
