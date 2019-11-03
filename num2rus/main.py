@@ -137,7 +137,9 @@ def main_parser(number_str: str, dimention: str) -> Tuple[str, str, str]:
     elif decs > 1:
         string += " " + NUMBERS["десятки"][decs*10]
         tl = TAILS[dimention]['other']
-        if ones > 0:
+        if ones in [1, 2]:
+            string += " " + NUMBERS["додвадцати"][ones][0]
+        elif ones > 2:
             string += " " + NUMBERS["додвадцати"][ones]
             tl = TAILS[dimention]['додвадцати'][ones]
     rubs = get_rubles(dimention, number_int, ones, decs, hunderts)
@@ -167,4 +169,4 @@ def converter(number: float, zero_on: bool = True) -> str:
 
 if __name__ == "__main__":
     # num = input()
-    transscriber(1_100_101.20)
+    converter(34102)
