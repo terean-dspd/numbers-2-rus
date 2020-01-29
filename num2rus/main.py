@@ -30,7 +30,7 @@ def chopper(num: int) -> Tuple[str, str]:
     marks them as
     `миллиард`, `миллион`, `тысяча`, `сотня`, `единица`, `десятка`
     """
-    num_str = str(num)
+    num_str = str(num) # '20'
     while len(num_str) > 0:
         if 13 > len(num_str) >= 10:
             step = len(num_str) - 9
@@ -50,8 +50,11 @@ def chopper(num: int) -> Tuple[str, str]:
         if len(num_str) == 1:
             yield num_str, 'единица'
             break
-        if len(num_str) == 2:
+        if len(num_str) == 2 and num_str[0] == '1':
             yield num_str, 'десятка'
+            break
+        else:
+            yield num_str, 'сотня'
             break
 
 
@@ -157,7 +160,6 @@ def converter(number: float, zero_on: bool = True) -> str:
     dec_str = "{0:.2f}".format(decimal - integet_part)
     decimal_part: str = dec_str.split('.')[1]
     result = ''
-    tl_g = ''
     for number, size in chopper(integet_part):
         string, tl, rub = main_parser(number, size)
         result += string + tl + ' '
@@ -169,4 +171,4 @@ def converter(number: float, zero_on: bool = True) -> str:
 
 if __name__ == "__main__":
     # num = input()
-    converter(34102)
+    converter(20)
