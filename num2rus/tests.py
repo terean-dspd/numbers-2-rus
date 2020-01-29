@@ -27,6 +27,43 @@ class Testconverter(unittest.TestCase):
         result = converter(10, zero_on=False)
         self.assertEqual(result, 'десять рублей')
 
+    def test_20(self):
+        result = converter(20, zero_on=False)
+        self.assertEqual(result, 'двадцать рублей')
+
+    def test_21(self):
+        result = converter(21, zero_on=False)
+        self.assertEqual(result, 'двадцать один рубль')
+
+    def test_25(self):
+        result = converter(25, zero_on=False)
+        self.assertEqual(result, 'двадцать пять рублей')
+
+    def test_30(self):
+        result = converter(30, zero_on=False)
+        self.assertEqual(result, 'тридцать рублей')
+
+    def test_33(self):
+        result = converter(33, zero_on=False)
+        self.assertEqual(result, 'тридцать три рубля')
+
+    def test_43(self):
+        result = converter(43, zero_on=False)
+        self.assertEqual(result, 'сорок три рубля')
+
+    def test_50(self):
+        result = converter(50, zero_on=False)
+        self.assertEqual(result, 'пятьдесят рублей')
+    def test_75(self):
+        result = converter(75, zero_on=False)
+        self.assertEqual(result, 'семьдесят пять рублей')
+
+    def test_90(self):
+        result = converter(90, zero_on=False)
+        self.assertEqual(result, 'девяносто рублей')
+    def test_99(self):
+        result = converter(99, zero_on=False)
+        self.assertEqual(result, 'девяносто девять рублей')
     def test_100(self):
         result = converter(100, zero_on=False)
         self.assertEqual(result, 'сто рублей')
@@ -246,9 +283,6 @@ class TestconverterNonZeroKops(unittest.TestCase):
         result = converter(123.40)
         self.assertEqual(result, 'сто двадцать три рубля сорок копеек')
 
-    def test_1_z_123_40(self):
-        result = converter(123.40)
-        self.assertEqual(result, 'сто двадцать три рубля сорок копеек')
 
     def test_1_z_133_41(self):
         result = converter(133.41)
