@@ -29,4 +29,4 @@ jobs:
         pip install coverage
         coverage run num2rus/tests.py
     - name: Tests report
-        run: coverage report
+      run: coverage report
