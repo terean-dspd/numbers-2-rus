@@ -54,6 +54,7 @@ class Testconverter(unittest.TestCase):
     def test_50(self):
         result = converter(50, zero_on=False)
         self.assertEqual(result, 'пятьдесят рублей')
+
     def test_75(self):
         result = converter(75, zero_on=False)
         self.assertEqual(result, 'семьдесят пять рублей')
@@ -61,9 +62,11 @@ class Testconverter(unittest.TestCase):
     def test_90(self):
         result = converter(90, zero_on=False)
         self.assertEqual(result, 'девяносто рублей')
+
     def test_99(self):
         result = converter(99, zero_on=False)
         self.assertEqual(result, 'девяносто девять рублей')
+
     def test_100(self):
         result = converter(100, zero_on=False)
         self.assertEqual(result, 'сто рублей')
@@ -282,7 +285,6 @@ class TestconverterNonZeroKops(unittest.TestCase):
     def test_1_z_123_40(self):
         result = converter(123.40)
         self.assertEqual(result, 'сто двадцать три рубля сорок копеек')
-
 
     def test_1_z_133_41(self):
         result = converter(133.41)

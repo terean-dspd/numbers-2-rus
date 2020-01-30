@@ -30,7 +30,8 @@ def chopper(num: int) -> Tuple[str, str]:
     marks them as
     `миллиард`, `миллион`, `тысяча`, `сотня`, `единица`, `десятка`
     """
-    num_str = str(num) # '20'
+
+    num_str = str(num)  # '20'
     while len(num_str) > 0:
         if 13 > len(num_str) >= 10:
             step = len(num_str) - 9
