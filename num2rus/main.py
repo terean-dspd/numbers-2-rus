@@ -140,7 +140,13 @@ def main_parser(number_str: str, dimention: str) -> Tuple[str, str, str]:
     elif decs > 1:
         string += " " + NUMBERS["десятки"][decs*10]
         tl = TAILS[dimention]['other']
-        if ones in [1, 2]:
+        if ones in [1, 2] and dimention in ['тысяча', 'миллион', 'миллиард']:
+            if dimention in ['тысяча',]:
+                string += " " + NUMBERS["додвадцати"][ones][1]
+            else:
+                string += " " + NUMBERS["додвадцати"][ones][0]
+            tl = TAILS[dimention]['додвадцати'][ones]
+        elif ones in [1, 2]:
             string += " " + NUMBERS["додвадцати"][ones][0]
         elif ones > 2:
             string += " " + NUMBERS["додвадцати"][ones]
