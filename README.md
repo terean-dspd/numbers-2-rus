@@ -5,6 +5,7 @@
 A small package to convert float numbers to russian string.
 
 ## What's new
+- bug fix for #4 issue
 - bug fix for #2 issue
 - bug fix for #1 issue
 - unittests added
