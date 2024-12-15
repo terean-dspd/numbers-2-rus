@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="num2rus",
-    version="0.0.8.3",
+    version="0.0.11",
     author="DennisKot",
     author_email="DennisKot@google.com",
     description="A small package to convert float numbers to russian string",
