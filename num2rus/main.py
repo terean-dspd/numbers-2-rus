@@ -4,7 +4,7 @@
 
 from typing import Tuple
 from decimal import Decimal
-from . converter import NUMBERS, TAILS, KOPS, RUBS
+from .converter import NUMBERS, TAILS, KOPS, RUBS
 
 
 def get_rubles(dimention, value, ones, decs, hunderts):
@@ -174,7 +174,6 @@ def converter(number: float, zero_on: bool = True) -> str:
 
     return " ".join([main_part, rub, decimal_part.strip(), kops]).strip()
 
-
 if __name__ == "__main__":
-    # num = input()
-    converter(20)
+    num_to_convert=input("Inter your number")
+    converter(num_to_convert)

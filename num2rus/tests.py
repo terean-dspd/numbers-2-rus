@@ -266,6 +266,18 @@ class TestconverterZeroKops(unittest.TestCase):
             result,
             'сто один миллион сто одна тысяча сто два рубля ноль копеек')
 
+    def test_10_000(self):
+        result = converter(10_000)
+        self.assertEqual(
+            result,
+            'десять тысяч рублей ноль копеек')
+
+    def test_11_000(self):
+        result = converter(11_000)
+        self.assertEqual(
+            result,
+            'одиннадцать тысяч рублей ноль копеек')
+
 
 class TestconverterNonZeroKops(unittest.TestCase):
     # def test_0(self):
