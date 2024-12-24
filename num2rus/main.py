@@ -155,7 +155,17 @@ def main_parser(number_str: str, dimention: str) -> Tuple[str, str, str]:
     return string, tl, rubs
 
 
-def converter(number: float, zero_on: bool = True) -> str:
+def converter(number: float, zero_on: bool = True, only_rubles: bool = False) -> str:
+    """Converts summ represented as foat number to russian string representation
+
+    Args:
+        number (float): summ of money 
+        zero_on (bool, optional): if `zero_on` is `True` adds `ноль копеек` . Defaults to True.
+        only_rubles (bool, optional): ignore kopeki at all. Defaults to False.
+
+    Returns:
+        str: string representation of the summ
+    """
     if not isinstance(number, float):
         try:
             number = float(number)
@@ -171,7 +181,9 @@ def converter(number: float, zero_on: bool = True) -> str:
         result += string + tl + ' '
     main_part = result.strip()
     decimal_part, kops = decimal_parser(decimal_part, zero_on)
-
+    if only_rubles:
+        decimal_part = ""
+        kops = ""
     return " ".join([main_part, rub, decimal_part.strip(), kops]).strip()
 
 if __name__ == "__main__":

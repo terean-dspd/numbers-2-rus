@@ -344,5 +344,27 @@ class TestconverterNonZeroKops(unittest.TestCase):
         result = converter(651_000_000_000)
         self.assertEqual(result, 'шестьсот пятьдесят один миллиард рублей ноль копеек')
 
+class TestconverterChangeDefauiltParams(unittest.TestCase):
+    def test_651_000_000_000z_00(self):
+        result = converter(651_000_000_000, zero_on=False)
+        self.assertEqual(result, 'шестьсот пятьдесят один миллиард рублей')
+
+    def test_651_000_000_000z_01(self):
+        result = converter(651_000_000_000.01, zero_on=False)
+        self.assertEqual(result, 'шестьсот пятьдесят один миллиард рублей одна копейка')
+
+    def test_651_000_000_000z_02(self):
+        result = converter(651_000_000_000, zero_on=False, only_rubles=True)
+        self.assertEqual(result, 'шестьсот пятьдесят один миллиард рублей')
+
+    def test_651_000_000_000z_03(self):
+        result = converter(651_000_000_000.01, zero_on=False, only_rubles=True)
+        self.assertEqual(result, 'шестьсот пятьдесят один миллиард рублей')
+
+    def test_651_000_000_000z_04(self):
+        result = converter(651_000_000_000.01, only_rubles=True)
+        self.assertEqual(result, 'шестьсот пятьдесят один миллиард рублей')
+
+
 if __name__ == '__main__':
     unittest.main()
