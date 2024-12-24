@@ -1,4 +1,4 @@
-![Upload Python Package](https://github.com/terean-dspd/numbers-2-rus/workflows/Upload%20Python%20Package/badge.svg)
+[![PyPI Downloads](https://static.pepy.tech/badge/num2rus)](https://pepy.tech/projects/num2rus)
 # num2rus v 0.1.0
 
 Небольшой python пакет для преобразования чисела в текст с учетмо множественного числа. 
