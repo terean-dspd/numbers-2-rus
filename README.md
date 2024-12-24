@@ -18,4 +18,13 @@ A small package to convert float numbers to russian string.
 ```python
  import num2rus
  num2rus.converter(1.10) # один рубль десять копеек
+ num2rus.converter(651_000_000_000) # шестьсот пятьдесят один миллиард рублей ноль копеек
+ num2rus.converter(
+    651_000_000_000,
+    zero_on=False
+) # шестьсот пятьдесят один миллиард рублей
+ num2rus.converter(
+    651_000_000_000.01,
+    only_rubles=True
+) # шестьсот пятьдесят один миллиард рублей
 ```
