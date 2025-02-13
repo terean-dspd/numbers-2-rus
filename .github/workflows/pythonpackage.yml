@@ -26,4 +26,4 @@ jobs:
     - name: Test with pytest
       run: |
         pip install pytest
-        pytest -v ./num2rus/
+        pytest -v ./num2rus/tests
