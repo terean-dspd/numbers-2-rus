@@ -364,6 +364,14 @@ class TestconverterChangeDefauiltParams(unittest.TestCase):
     def test_651_000_000_000z_04(self):
         result = converter(651_000_000_000.01, only_rubles=True)
         self.assertEqual(result, 'шестьсот пятьдесят один миллиард рублей')
+    def test_651_000_000_000z_04_only_numder(self):
+        result = converter(651_000_000_000.01, only_rubles=True, only_number=True)
+        self.assertEqual(result, 'шестьсот пятьдесят один миллиард')
+
+    def test_651_000_000_000z_02_only_numder(self):
+        result = converter(651_000_000_000, zero_on=False, only_rubles=True, only_number=True)
+        self.assertEqual(result, 'шестьсот пятьдесят один миллиард')
+
 
 
 if __name__ == '__main__':
