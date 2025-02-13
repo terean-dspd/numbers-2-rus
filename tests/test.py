@@ -1,6 +1,6 @@
 import unittest
 
-from . main import converter
+from  num2rus.main import converter
 
 
 class Testconverter(unittest.TestCase):
