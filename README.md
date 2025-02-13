@@ -1,11 +1,14 @@
 [![PyPI Downloads](https://static.pepy.tech/badge/num2rus)](https://pepy.tech/projects/num2rus)
-# num2rus v 0.1.0
+# num2rus v 1.0.0
 
 Небольшой python пакет для преобразования чисела в текст с учетмо множественного числа. 
 A small package to convert float numbers to russian string.
 
 ## What's new
-- `only_rubles` param was added to cut off kops part completely.
+- new currencies have been added:
+    - USD
+    - EUR
+    - CNY
 
 ## Usage
 
@@ -27,4 +30,8 @@ A small package to convert float numbers to russian string.
     651_000_000_000.01,
     only_rubles=True
 ) # шестьсот пятьдесят один миллиард рублей
+num2rus.converter(
+    651_000_000_000.01,
+    currency="CNY"
+) # шестьсот пятьдесят один миллиард один юань два цзяо один фынь 
 ```
