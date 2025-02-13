@@ -1,26 +1,28 @@
 """Converts `float` summ of money to Russian strings
 =======================================================
 """
-
-from typing import Tuple
+import re
+from typing import Tuple, Literal
 from decimal import Decimal
-from .converter import NUMBERS, TAILS, KOPS, RUBS
+from . converter import NUMBERS, TAILS, CURRENCY_ENDINGS, DECLINATOR
 
+currency_types = Literal['RUR', 'EUR', 'USD', 'CNY']
 
-def get_rubles(dimention, value, ones, decs, hunderts):
+    
+def get_rubles(dimention, value, ones, decs, hunderts, currency: currency_types):
 
     rubs = ""
     if dimention in ["сотня", "единица", "десятка"]:
         if value in [1, 2, 3, 4]:
-            rubs = RUBS[value]
+            rubs = CURRENCY_ENDINGS[currency]['MAIN'][value]
         elif decs == 1:
-            rubs = RUBS[0]
+            rubs = CURRENCY_ENDINGS[currency]['MAIN'][0]
         elif (hunderts > 0) and ones not in [1, 2, 3, 4]:
-            rubs = RUBS[0]
+            rubs = CURRENCY_ENDINGS[currency]['MAIN'][0]
         elif (hunderts > 0) and ones in [1, 2, 3, 4]:
-            rubs = RUBS[ones]
+            rubs = CURRENCY_ENDINGS[currency]['MAIN'][ones]
         else:
-            rubs = RUBS[ones]
+            rubs = CURRENCY_ENDINGS[currency]['MAIN'][ones]
     return rubs
 
 
@@ -58,7 +60,7 @@ def chopper(num: int) -> Tuple[str, str]:
             break
 
 
-def decimal_parser(number_str: str, zero_on: bool = True) -> Tuple[str, str]:
+def decimal_parser(number_str: str, zero_on: bool, currency: currency_types) -> Tuple[str, str]:
     """
     Decimal parser
     =================
@@ -69,32 +71,44 @@ def decimal_parser(number_str: str, zero_on: bool = True) -> Tuple[str, str]:
     string: str = ""
     ones: int = int(number_str[-1])
     decs: int = int(number_str[-2])
+    diclination_option = DECLINATOR[currency]['SECONDARY'] # -> 0, 1 or 3
     if 3 <= number_int and number_int <= 19:  # if number in 3 .. 19 get it
         string += " " + NUMBERS["додвадцати"][number_int]
     if number_int in [1, 2]:  # special case for Russian
-        string += " " + NUMBERS["додвадцати"][decs*10+ones][1]
+        string += " " + NUMBERS["додвадцати"][decs*10+ones][diclination_option]
     if number_int >= 20:
         string += " " + NUMBERS["десятки"][decs*10]
         if ones > 0 and ones in [1, 2]:
-            string += " " + NUMBERS["додвадцати"][ones][1]
+            string += " " + NUMBERS["додвадцати"][ones][diclination_option]
         elif ones > 0:
             string += " " + NUMBERS["додвадцати"][ones]
-    if number_int in [1, 2, 3, 4, 5, 6, 7, 8, 9]:
-        tail = KOPS[number_int]
-    elif decs == 1:
-        tail = KOPS[0]
-    elif decs > 1 and ones not in [1, 2, 3, 4]:
-        tail = KOPS[0]
-    elif decs > 1 and ones in [1, 2, 3, 4]:
-        tail = KOPS[ones]
-    if zero_on and not string and not tail:
-        string = NUMBERS["додвадцати"][0]
-        tail = KOPS[0]
-
+    if currency != "CNY":
+        if number_int in [1, 2, 3, 4, 5, 6, 7, 8, 9]:
+            tail = CURRENCY_ENDINGS[currency]['SECONDARY'][number_int]
+        elif decs == 1:
+            tail = CURRENCY_ENDINGS[currency]['SECONDARY'][0]
+        elif decs > 1 and ones not in [1, 2, 3, 4]:
+            tail = CURRENCY_ENDINGS[currency]['SECONDARY'][0]
+        elif decs > 1 and ones in [1, 2, 3, 4]:
+            tail = CURRENCY_ENDINGS[currency]['SECONDARY'][ones]
+        if zero_on and not string and not tail:
+            string = NUMBERS["додвадцати"][0]
+            tail = CURRENCY_ENDINGS[currency]['SECONDARY'][0]
+    else:
+        if decs in [1, 2]:
+            string = NUMBERS["додвадцати"][decs][0] + " " + CURRENCY_ENDINGS[currency]['SECONDARY'][decs]
+        else:
+            string = NUMBERS["додвадцати"][decs] + " " + CURRENCY_ENDINGS[currency]['SECONDARY'][decs]
+        if ones in [1, 2]:
+            tail = NUMBERS["додвадцати"][ones][0] + " " + CURRENCY_ENDINGS[currency]['TERTIARY'][ones]
+        else:
+            tail = NUMBERS["додвадцати"][ones] + " " + CURRENCY_ENDINGS[currency]['TERTIARY'][ones]
+        if not zero_on:
+            string, tail = "", ""
     return string, tail
 
 
-def main_parser(number_str: str, dimention: str) -> Tuple[str, str, str]:
+def main_parser(number_str: str, dimention: str, currency: currency_types) -> Tuple[str, str, str]:
     """
     Integer parser
     =================
@@ -151,17 +165,19 @@ def main_parser(number_str: str, dimention: str) -> Tuple[str, str, str]:
         elif ones > 2:
             string += " " + NUMBERS["додвадцати"][ones]
             tl = TAILS[dimention]['додвадцати'][ones]
-    rubs = get_rubles(dimention, number_int, ones, decs, hunderts)
+    rubs = get_rubles(dimention, number_int, ones, decs, hunderts, currency)
     return string, tl, rubs
 
 
-def converter(number: float, zero_on: bool = True, only_rubles: bool = False) -> str:
+def converter(number: float, currency: currency_types = "RUR", zero_on: bool = True, only_rubles: bool = False, only_number: bool = False) -> str:
     """Converts summ represented as foat number to russian string representation
 
     Args:
-        number (float): summ of money 
+        number (float): summ of money
+        cucurrency_types (Literal['RUR', 'EUR']): currency name, Default to `RUR`.
         zero_on (bool, optional): if `zero_on` is `True` adds `ноль копеек` . Defaults to True.
         only_rubles (bool, optional): ignore kopeki at all. Defaults to False.
+        only_number (bool, optional): output only number part - without currency name.
 
     Returns:
         str: string representation of the summ
@@ -177,15 +193,19 @@ def converter(number: float, zero_on: bool = True, only_rubles: bool = False) ->
     decimal_part: str = dec_str.split('.')[1]
     result = ''
     for number, size in chopper(integet_part):
-        string, tl, rub = main_parser(number, size)
+        string, tl, rub = main_parser(number, size, currency)
         result += string + tl + ' '
     main_part = result.strip()
-    decimal_part, kops = decimal_parser(decimal_part, zero_on)
+    decimal_part, kops = decimal_parser(decimal_part, zero_on, currency)
     if only_rubles:
         decimal_part = ""
         kops = ""
-    return " ".join([main_part, rub, decimal_part.strip(), kops]).strip()
+    if only_number:
+        rub, kops = "", ""
+    result = " ".join([main_part.strip(), rub.strip(), decimal_part.strip(), kops]).strip()
+    return re.sub(r'\s+', ' ', result).strip()
 
 if __name__ == "__main__":
-    num_to_convert=input("Inter your number")
-    converter(num_to_convert)
+    num_to_convert=input("Inter your number: ")
+    cyrrency=input("Inter your currency['RUR', 'EUR', 'USD', 'CNY']: ")
+    converter(num_to_convert, currency=cyrrency)
